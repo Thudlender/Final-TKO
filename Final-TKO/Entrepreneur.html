@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matching Platform</title>
+<style>
+/* เพิ่ม CSS ที่ใช้สำหรับการปรับแต่งหน้าเว็บ */
+/* ตัวอย่าง CSS ที่ปรับแต่งแล้ว */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.student-match {
+    margin-bottom: 30px; /* เพิ่มเว้นระหว่างแต่ละกล่องแยกโชว์ */
+}
+
+.student-match h2 {
+    margin-bottom: 10px;
+}
+
+.match {
+    display: flex; /* เปลี่ยนจากการใช้ grid เป็น flex */
+    flex-direction: column; /* จัดเรียงแต่ละรายการแนวตั้ง */
+    align-items: center; /* จัดให้รายการแนวตั้งอยู่กึ่งกลาง */
+    gap: 10px; /* เพิ่มเว้นระหว่างรายการ */
+}
+
+.match h3 {
+    margin: 0; /* ลบระยะห่างขอบซ้ายของหัวข้อ */
+}
+
+.match img {
+    width: 100%; /* กำหนดให้ความกว้างของรูปภาพเท่ากับความกว้างของกล่อง */
+    height: 100%; /* กำหนดให้ความสูงของรูปภาพเท่ากับความสูงของกล่อง */
+    object-fit: cover; /* จัดให้รูปภาพเต็มกล่องโดยไม่เสียสัดส่วน */
+    border-radius: 5px;
+}
+
+</style>
+</head>
+<body>
+<h1>Matching Platform</h1>
+
+<!-- Form สำหรับให้ผู้ใช้กรอกข้อมูล -->
+<form id="studentForm">
+    <label for="name">ชื่อ:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="age">อายุ:</label>
+    <input type="number" id="age" name="age"><br><br>
+    <label for="abilities">ความสามารถ:</label>
+    <input type="text" id="abilities" name="abilities"><br><br>
+    <label for="image">รูปภาพ:</label>
+    <input type="file" id="image" name="image"><br><br>
+    <button type="submit">เพิ่มนักศึกษา</button>
+</form>
+
+
+<div id="matches" class="matches"></div>
+
+
+<script>
+    // ข้อมูลของบริษัทและความต้องการของแต่ละบริษัท
+    const companies = [
+        { name: "บริษัท A", requirements: ["JavaScript", "HTML", "CSS"], image: "De-Haro-Place1.webp" },
+        { name: "บริษัท B", requirements: ["Python", "Django", "Flask"], image: "Youtube.png" },
+        { name: "บริษัท C", requirements: ["Java", "Spring", "Hibernate"], image: "Tesla.jpg" }
+    ];
+
+    // ฟังก์ชันสำหรับให้นักศึกษาเลือกบริษัทที่ต้องการฝึกงาน
+    function chooseCompany(studentAbilities) {
+        const availableCompanies = [];
+        companies.forEach(company => {
+            // ตรวจสอบว่าความสามารถของนักศึกษาสอดคล้องกับความต้องการของบริษัทหรือไม่
+            const matchedSkills = company.requirements.filter(skill => studentAbilities.includes(skill));
+            if (matchedSkills.length === company.requirements.length) {
+                availableCompanies.push(company);
+            }
+        });
+        return availableCompanies;
+    }
+    
+    // เพิ่มอีเวนต์ให้กับฟอร์มสำหรับการส่งข้อมูลนักศึกษา
+    const form = document.getElementById('studentForm');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+        const studentData = {};
+        for (let [key, value] of formData.entries()) {
+            studentData[key] = value;
+        }
+        // เพิ่มอายุให้นักศึกษา
+        studentData.age = Number(studentData.age);
+        // เพิ่มข้อมูลนักศึกษาลงในอาร์เรย์ของข้อมูลนักศึกษา
+        studentAbilities.push(studentData);
+        displayMatches();
+        // เคลียร์ฟอร์มหลังจากเพิ่มข้อมูลเสร็จ
+        this.reset();
+    });
+
+    // ข้อมูลความสามารถของนักศึกษา
+    const studentAbilities = [
+    { name: "นางสาว X", age: 25, abilities: ["JavaScript", "HTML", "CSS"], image: "student_x.jpg" },
+    { name: "นาย Y", age: 27, abilities: ["Python", "Machine Learning", "Data Science"], image: "student_y.jpg" },
+    { name: "นาง Z", age: 23, abilities: ["Java", "Android Development", "Database"], image: "student_z.jpg" },
+];
+
+    // ฟังก์ชันสำหรับแสดงข้อมูลของนักศึกษาและบริษัทที่เหมาะสม
+function displayMatches() {
+    const matchesContainer = document.getElementById('matches');
+    matchesContainer.innerHTML = '';
+    studentAbilities.forEach(student => {
+        const availableCompanies = chooseCompany(student.abilities);
+        availableCompanies.forEach(company => {
+            const matchElement = document.createElement('div');
+            matchElement.classList.add('match'); // เพิ่ม class match เพื่อให้สามารถใช้ CSS สำหรับการจัดหน้าแต่ละรายการได้
+            matchElement.innerHTML = `
+                <div>
+                    <h3>${student.name} (${student.age} ปี) สามารถเลือกได้ระหว่างบริษัท ${company.name}</h3>
+                    <img src="${student.image}" alt="${student.name}">
+                </div>
+                <div>
+                    <img src="${company.image}" alt="${company.name}">
+                </div>
+            `;
+            matchesContainer.appendChild(matchElement);
+        });
+    });
+}
+
+
+    // เรียกใช้งานฟังก์ชัน displayMatches เมื่อโหลดหน้าเว็บเสร็จสิ้น
+    displayMatches();
+</script>
+</body>
+</html>

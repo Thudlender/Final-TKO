@@ -1,0 +1,77 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto; /* เพิ่มเว้นระหว่าง container กับขอบหน้าจอ */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px; /* เพิ่มเว้นระหว่างหัวข้อกับฟอร์ม */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 16px); /* ปรับขนาด input เพื่อให้มีเว้นระหว่างแนวด้านซ้ายและขวา */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.student-match {
+    margin-bottom: 30px; /* เพิ่มเว้นระหว่างแต่ละกล่องแยกโชว์ */
+}
+
+.student-match h2 {
+    margin-bottom: 10px;
+}
+
+.match {
+    display: flex; /* เปลี่ยนจากการใช้ grid เป็น flex */
+    flex-direction: column; /* จัดเรียงแต่ละรายการแนวตั้ง */
+    align-items: center; /* จัดให้รายการแนวตั้งอยู่กึ่งกลาง */
+    gap: 10px; /* เพิ่มเว้นระหว่างรายการ */
+}
+
+.match h3 {
+    margin: 0; /* ลบระยะห่างขอบซ้ายของหัวข้อ */
+}
+
+.match img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
